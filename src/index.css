@@ -58,6 +58,7 @@ input.landing-section-input:focus {
   overflow-y: scroll !important;
   transition: all 0.25s ease-in-out !important;
   max-height: 250px;
+  padding: 2em 1em 0 1em !important;
 }
 
 .search-result-wrapper {
@@ -67,7 +68,6 @@ input.landing-section-input:focus {
   width: 100%;
   height: 0;
   overflow: hidden;
-  padding: 0 1.6em;
   background: white;
   margin: auto !important;
   position: relative;
