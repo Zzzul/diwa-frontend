@@ -67,11 +67,14 @@ class LandingSection extends React.Component {
     }
 
     handleClickOutside = (event) => {
+        var divnyapenampunghasilsearch = document.querySelector('.search-result-wrapper');
         if (this.wrapperRef && !this.wrapperRef.current.contains(event.target)) {
             // hide the search result
             this.setState({
                 distroSearchResults: []
             })
+            divnyapenampunghasilsearch.classList.remove('search-result-wrapper-show');
+            
         }
     }
 
