@@ -31,6 +31,7 @@ class LandingSection extends React.Component {
             isLoaded: false,
             distroSearchResults: [],
             listOfDistributions: [],
+            searchState: 'success'
         }
 
         this.wrapperRef = React.createRef();
@@ -84,6 +85,12 @@ class LandingSection extends React.Component {
         var divnyapenampunghasilsearch = document.querySelector('.search-result-wrapper');
 
         divnyapenampunghasilsearch.classList.add('search-result-wrapper-show');
+
+        // add progress bar
+        this.setState({
+            searchState: 'loading'
+        })
+
         // wait until done typing in one second
         delay(() => {
             let listOfDistributions = this.state.listOfDistributions
@@ -95,12 +102,19 @@ class LandingSection extends React.Component {
                 }
             }
 
-            this.setState({ distroSearchResults: searchResults })
+            this.setState({
+                distroSearchResults: searchResults
+            })
 
+            divnyapenampunghasilsearch.classList.add('search-result-wrapper-show');
             if (searchResults.length > 0) {
-                divnyapenampunghasilsearch.classList.add('search-result-wrapper-show');
+                this.setState({
+                    searchState: 'success'
+                })
             } else {
-                divnyapenampunghasilsearch.classList.remove('search-result-wrapper-show');
+                this.setState({
+                    searchState: 'notfound'
+                })
             }
         }, 1000 );
     }
@@ -135,10 +149,7 @@ class LandingSection extends React.Component {
                             zIndex="2"
                             position="relative"
                         />
-                        <DistroListSearchResult searchResults={this.state.distroSearchResults} />
-                    </Box>
-                    <Box className="landing-section-progress">
-                        <Progress size="xs" isIndeterminate />
+                        <DistroListSearchResult searchState={this.state.searchState} searchResults={this.state.distroSearchResults} />
                     </Box>
                 </Box>
             </Box>

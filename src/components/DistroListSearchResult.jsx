@@ -3,11 +3,12 @@ import React from "react";
 import {
     ListItem,
     UnorderedList,
-    Link
+    Link,
+    Progress
 } from "@chakra-ui/react"
 
 
-function DistroListSearchResult({ searchResults }) {
+function DistroListSearchResult({ searchState, searchResults }) {
 
     const searchResultList = searchResults.map((result, index) => {
         return (
@@ -18,14 +19,18 @@ function DistroListSearchResult({ searchResults }) {
             </ListItem>
         )
     })
+    console.log(searchState)
 
-  return (
-    <UnorderedList className="search-result-wrapper">
-        {
-            searchResultList
-        }
-    </UnorderedList>
-  )
+    return(
+        <UnorderedList className="search-result-wrapper">
+            {
+                searchState === 'success' ? searchResultList : 
+                searchState === 'loading' ? <Progress size='xs' isIndeterminate /> :
+                searchState === 'error' ? <ListItem>Something went wrong</ListItem> : <ListItem>Not Found</ListItem>
+
+            }
+        </UnorderedList>
+    )
 }
 
 export default DistroListSearchResult
