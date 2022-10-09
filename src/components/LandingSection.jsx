@@ -115,9 +115,15 @@ class LandingSection extends React.Component {
                     searchState: 'success'
                 })
             } else {
-                this.setState({
-                    searchState: 'notfound'
-                })
+                if(yangdiketik.length > 0) {
+                    this.setState({
+                        searchState: 'notfound'
+                    })
+                } else {
+                    this.setState({
+                        searchState: 'success'
+                    })
+                }
             }
         }, 1000 );
     }
