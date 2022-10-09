@@ -33,7 +33,10 @@ class LandingSection extends React.Component {
             listOfDistributions: [],
         }
 
+        this.wrapperRef = React.createRef();
+        
         this.searchHandler = this.searchHandler.bind(this);
+        this.handleClickOutside = this.handleClickOutside.bind(this);
     }
 
     componentDidMount() {
@@ -43,13 +46,10 @@ class LandingSection extends React.Component {
             (result) => {
                 this.setState({
                     isLoaded: true,
-                    listOfDistributions: result.distibutions
+                    listOfDistributions: result.distributions
                 });
-                console.log(result.distibutions)
+                console.log(result.distributions)
             },
-            // Note: it's important to handle errors here
-            // instead of a catch() block so that we don't swallow
-            // exceptions from actual bugs in components.
             (error) => {
                 this.setState({
                     isLoaded: true,
@@ -57,6 +57,21 @@ class LandingSection extends React.Component {
                 });
             }
         )
+
+        document.addEventListener('mousedown', this.handleClickOutside);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('mousedown', this.handleClickOutside);
+    }
+
+    handleClickOutside = (event) => {
+        if (this.wrapperRef && !this.wrapperRef.current.contains(event.target)) {
+            // hide the search result
+            this.setState({
+                distroSearchResults: []
+            })
+        }
     }
 
     searchHandler = (event) => {
@@ -108,11 +123,11 @@ class LandingSection extends React.Component {
                     <Text fontSize="1.5rem" fontWeight="bold" color="white">
                         What distro do you want to know about?
                     </Text>
-                    <Box w="100%" position="relative">
+                    <Box w="50%" position="relative" ref={this.wrapperRef}>
                         <Input
                             placeholder="Enter a distro name"
                             size="lg"
-                            w="50%"
+                            w="100%"
                             mt={4}
                             className="landing-section-input"
                             onChange={this.searchHandler}
