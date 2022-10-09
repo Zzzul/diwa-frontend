@@ -1,6 +1,17 @@
 import React from "react";
 import reactLogo from '../assets/react.svg'
-import { Box, Text, Image, Input } from "@chakra-ui/react"
+import { 
+    Box, 
+    Text, 
+    Image, 
+    Input, 
+    UnorderedList,
+    ListItem,
+    Button,
+    Link,
+    Progress
+} from "@chakra-ui/react"
+import DistroListSearchResult from "./DistroListSearchResult";
 
 
 var delay = (function(){
@@ -16,13 +27,36 @@ class LandingSection extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            searchDistroValue: false,
+            searchDistroValue: '',
+            isLoaded: false,
+            distroSearchResults: [],
+            listOfDistributions: [],
         }
+
         this.searchHandler = this.searchHandler.bind(this);
     }
 
-    searchAPIHandler(value) {
-        console.log(`API Called${value}`);
+    componentDidMount() {
+        fetch("https://diwa.herokuapp.com/api/v2/distributions")
+            .then(res => res.json())
+            .then(
+            (result) => {
+                this.setState({
+                    isLoaded: true,
+                    listOfDistributions: result.distibutions
+                });
+                console.log(result.distibutions)
+            },
+            // Note: it's important to handle errors here
+            // instead of a catch() block so that we don't swallow
+            // exceptions from actual bugs in components.
+            (error) => {
+                this.setState({
+                    isLoaded: true,
+                    error
+                });
+            }
+        )
     }
 
     searchHandler = (event) => {
@@ -32,13 +66,32 @@ class LandingSection extends React.Component {
         console.log(yangdiketik)
         this.setState({ searchDistroValue: yangdiketik })
 
+        var divnyapenampunghasilsearch = document.querySelector('.search-result-wrapper');
+
+        divnyapenampunghasilsearch.classList.add('search-result-wrapper-show');
         // wait until done typing in one second
         delay(() => {
-            this.searchAPIHandler(yangdiketik)
+            let listOfDistributions = this.state.listOfDistributions
+            console.log(listOfDistributions)
+            let searchResults = []
+            for (let i = 0; i < listOfDistributions.length; i++) {
+                if (listOfDistributions[i].name.toLowerCase().includes(yangdiketik.toLowerCase())) {
+                    searchResults.push(listOfDistributions[i])
+                }
+            }
+
+            this.setState({ distroSearchResults: searchResults })
+
+            if (searchResults.length > 0) {
+                divnyapenampunghasilsearch.classList.add('search-result-wrapper-show');
+            } else {
+                divnyapenampunghasilsearch.classList.remove('search-result-wrapper-show');
+            }
         }, 1000 );
     }
 
     render() {
+        const {error, isLoaded, listOfDistributions} = this.state;
         return (
             <Box
                 w="100%"
@@ -55,20 +108,26 @@ class LandingSection extends React.Component {
                     <Text fontSize="1.5rem" fontWeight="bold" color="white">
                         What distro do you want to know about?
                     </Text>
-                    <Input
-                        placeholder="Enter a distro name"
-                        size="lg"
-                        w="50%"
-                        mt={4}
-                        className="landing-section-input"
-                        onChange={this.searchHandler}
-                        bg="white"
-                    />
-
+                    <Box w="100%" position="relative">
+                        <Input
+                            placeholder="Enter a distro name"
+                            size="lg"
+                            w="50%"
+                            mt={4}
+                            className="landing-section-input"
+                            onChange={this.searchHandler}
+                            bg="white"
+                            zIndex="2"
+                            position="relative"
+                        />
+                        <DistroListSearchResult searchResults={this.state.distroSearchResults} />
+                    </Box>
+                    <Box className="landing-section-progress">
+                        <Progress size="xs" isIndeterminate />
+                    </Box>
                 </Box>
-
             </Box>
-        );
+        )
     }
 }
 
