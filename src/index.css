@@ -48,14 +48,43 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+
+input.landing-section-input:focus {
+  z-index: 2;
 }
 
+.search-result-wrapper-show {
+  height: auto !important;
+  overflow-y: scroll !important;
+  transition: all 0.25s ease-in-out !important;
+  max-height: 250px;
+  padding: 2em 1em 0 1em !important;
+}
+
+.search-result-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 0;
+  overflow: hidden;
+  background: white;
+  margin: auto !important;
+  position: relative;
+  margin-top: -10px !important;
+  padding-top: 10px;
+  z-index: 1;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  text-align: left;
+  transition: all 0.25s ease-in-out !important;
+}
+
+.search-result-wrapper li {
+  list-style: none;
+  margin: 0;
+  padding: 5px;
+}
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

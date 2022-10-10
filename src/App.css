@@ -1,8 +1,10 @@
 #root {
-  max-width: 1280px;
+  width: 100%;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
 }
 
 .logo {
@@ -15,6 +17,10 @@
 }
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+.react-logo {
+  animation: logo-spin infinite 20s linear;
 }
 
 @keyframes logo-spin {
@@ -38,4 +44,14 @@
 
 .read-the-docs {
   color: #888;
+}
+
+
+.landing-section-inner {
+  padding-top: 12em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1 0 auto;
 }
